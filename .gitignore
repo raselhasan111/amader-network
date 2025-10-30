@@ -1,0 +1,44 @@
+# Node.js / Next.js
+node_modules/
+.next/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python / FastAPI
+__pycache__/
+*.py[cod]
+*.env
+*.sqlite3
+*.log
+*.db
+.env
+venv/
+env/
+instance/
+.mypy_cache/
+.pytest_cache/
+coverage.xml
+htmlcov/
+
+# Docker
+*.pid
+*.sock
+*.tar
+*.gz
+*.zip
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+
+# WebStorm / JetBrains IDEs
+.idea/
+*.iml
