@@ -1,6 +1,16 @@
+'use client'
+
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {useRouter} from "next/navigation";
 
 export default function Home() {
+    const router = useRouter();
+
+    const handleGoogleLogin = () => {
+        router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`);
+    };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -58,6 +68,21 @@ export default function Home() {
           >
             Documentation
           </a>
+        </div>
+        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+          <Button
+            onClick={handleGoogleLogin}
+            variant="outline"
+          >
+            <Image
+              src="/globe.svg"
+              alt="Google logo"
+              width={20}
+              height={20}
+              className="mr-2"
+            />
+            Continue with Google
+          </Button>
         </div>
       </main>
     </div>
