@@ -149,62 +149,31 @@ curl -s http://127.0.0.1:8000/openapi.json | head -50
 ```
 
 ## Frontend Integration
-Create an OAuth callback page to store the token and redirect:
-```tsx
-// frontend/app/auth/callback/page.tsx
-'use client';
-import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function AuthCallback() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+The frontend uses **cookie-based authentication** with **Redux Toolkit (RTK)** for global state management.
 
-  useEffect(() => {
-    const token = searchParams.get('token');
-    if (token) {
-      localStorage.setItem('access_token', token);
-      router.push('/dashboard');
-    } else {
-      router.push('/login?error=authentication_failed');
-    }
-  }, [searchParams, router]);
+### Key Features Implemented:
+- ✅ JWT tokens stored in HTTP cookies (30-min expiry)
+- ✅ Redux store with user profile slice
+- ✅ Protected routes with automatic redirect
+- ✅ Token expiration checking
+- ✅ Google OAuth callback handler
+- ✅ Sign-in page with Google button
+- ✅ Home page with user profile
 
-  return <div className="p-6 text-center">Authenticating...</div>;
-}
-```
-Add a login button that starts the OAuth flow:
-```tsx
-// components/LoginButton.tsx
-export function LoginButton() {
-  return (
-    <button onClick={() => (window.location.href = 'http://127.0.0.1:8000/auth/google')}>
-      Login with Google
-    </button>
-  );
-}
-```
-Helper for authenticated API calls:
-```ts
-// frontend/services/api.ts
-const API_BASE_URL = 'http://127.0.0.1:8000';
+### Routes:
+- `/` - Root (redirects based on auth status)
+- `/signin` - Sign in page with Google OAuth button
+- `/auth/callback` - OAuth callback handler (stores token, populates Redux, redirects to /home)
+- `/home` - Protected home page (requires authentication)
 
-export async function fetchWithAuth(endpoint: string, options: any = {}) {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-  const headers = {
-    'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...(options.headers || {}),
-  };
-  const res = await fetch(`${API_BASE_URL}${endpoint}`, { ...options, headers });
-  if (res.status === 401) {
-    localStorage.removeItem('access_token');
-    window.location.href = '/login';
-    throw new Error('Authentication required');
-  }
-  return res;
-}
-```
+### Authentication Flow:
+1. User visits `/signin` and clicks "Sign in with Google"
+2. Backend handles OAuth flow and redirects to `/auth/callback?token={JWT}`
+3. Frontend stores token in cookie and decodes it
+4. User profile populated in Redux store
+5. User redirected to `/home`
+6. Protected routes check token expiration automatically
 
 ## Project Structure
 ```
@@ -238,20 +207,62 @@ amader-network/
 ```
 
 ## Useful Commands
-Virtual environment + deps:
+
+### Local Backend Setup
+Create virtual environment:
 ```bash
 cd backend
 python -m venv venv
+```
+
+Activate virtual environment:
+```bash
+# Linux/macOS
 source venv/bin/activate
+
+# Windows
+venv\Scripts\activate
+```
+
+Install dependencies:
+```bash
 pip install -r requirements.txt
 ```
 Run backend:
 ```bash
 uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
+
 Run verification script:
 ```bash
 ./verify.sh
+```
+
+Freeze current deps:
+```bash
+pip freeze > requirements.txt
+```
+
+### Local Frontend Setup
+Install dependencies:
+```bash
+cd frontend
+pnpm install
+```
+
+Run development server:
+```bash
+pnpm dev
+```
+
+Build for production:
+```bash
+pnpm build
+```
+
+Start production server:
+```bash
+pnpm start
 ```
 
 ## Security Notes
