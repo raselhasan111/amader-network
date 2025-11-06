@@ -1,12 +1,12 @@
 "use client"
 
-import {useState, useEffect, useRef, useCallback} from "react"
+import React, {useState, useEffect, useRef, useCallback} from "react"
 import {Card} from "@/components/ui/card"
-import {Avatar} from "@/components/ui/avatar"
 import {Textarea} from "@/components/ui/textarea"
 import {Button} from "@/components/ui/button"
 import Post from "@/components/post"
 import {useAppSelector} from "@/lib/hooks";
+import UserAvatar from "@/components/shared/user-avatar";
 
 interface PostType {
     id: string
@@ -152,9 +152,7 @@ export default function Feed({searchQuery}: FeedProps) {
             {/* Create Post */}
             <Card className="p-6 mb-6 border-b">
                 <div className="flex gap-4">
-                    <Avatar className="w-12 h-12">
-                        <img src={profile?.picture || "/placeholder.svg"} alt={profile?.name}/>
-                    </Avatar>
+                    <UserAvatar src={profile?.picture} fallback={profile?.name}/>
                     <div className="flex-1">
                         <div className="flex flex-col gap-2">
                             <Textarea

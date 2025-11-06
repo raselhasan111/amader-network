@@ -10,6 +10,7 @@ import {Button} from "@/components/ui/button"
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {authUtils} from "@/lib/auth";
 import {clearUser} from "@/lib/features/userSlice";
+import UserAvatar from "@/components/shared/user-avatar";
 
 interface NavbarProps {
     onSearch: (query: string) => void
@@ -102,10 +103,9 @@ export default function Navbar({onSearch}: NavbarProps) {
 
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <button className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                                    <img src={profile?.picture || "/placeholder.svg"} alt={profile?.name}
-                                         className="w-8 h-8 rounded-full"/>
-                                </button>
+                                <div className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                                    <UserAvatar src={profile?.picture} fallback={profile?.name} />
+                                </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuItem onClick={handleProfile}>Profile</DropdownMenuItem>
