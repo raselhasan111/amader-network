@@ -152,7 +152,7 @@ export default function Feed({searchQuery}: FeedProps) {
             {/* Create Post */}
             <Card className="p-6 mb-6 border-b">
                 <div className="flex gap-4">
-                    <UserAvatar src={profile?.picture} fallback={profile?.name}/>
+                    <UserAvatar src={profile?.picture} fallback={profile?.name} containerClassname={'h-12 w-12'}/>
                     <div className="flex-1">
                         <div className="flex flex-col gap-2">
                             <Textarea
