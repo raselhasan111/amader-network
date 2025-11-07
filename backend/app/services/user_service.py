@@ -8,7 +8,12 @@ from ..schemas.user import UserCreate
 
 def get_user_by_email(db: Session, email: EmailStr) -> Optional[User]:
     """Get user by email"""
-    return db.query(User).filter(User.email == email).first()
+    return db.query(User).filter_by(email=email).first()
+
+
+def get_user_by_google_id(db: Session, google_id: str) -> Optional[User]:
+    """Get user by Google ID"""
+    return db.query(User).filter_by(google_id=google_id).first()
 
 
 def create_user(db: Session, user_data: UserCreate) -> User:
@@ -38,4 +43,3 @@ def get_or_create_user(db: Session, user_data: UserCreate) -> tuple[User, bool]:
     # Create new user
     user = create_user(db, user_data)
     return user, True
-

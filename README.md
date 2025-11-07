@@ -265,6 +265,16 @@ Start production server:
 pnpm start
 ```
 
+### Seeding Data
+To populate the database with sample users, run the seeder script from the project root. You can configure the target API URL via the `API_URL` environment variable.
+
+```bash
+# Make sure your backend virtual environment is activated if running locally
+export API_URL="proto://host:port/users"
+python backend/scripts/seed_users.py
+```
+By default, this creates 100 users. You can easily modify the script to change this number.
+
 ## Security Notes
 - JWT tokens default to 30-minute expiry (configurable)
 - Keep SECRET_KEY and OAuth credentials in .env (never commit secrets)

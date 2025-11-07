@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api import auth
+from .api import auth, user
 from .core.config import SECRET_KEY, FRONTEND_URL
 from .db.database import engine
 from .models import Base
@@ -29,5 +29,6 @@ app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 def read_root():
     return {"message": "Welcome to Amader Network API"}
 
-# Include auth routes
+# Include all routes
 app.include_router(auth.router)
+app.include_router(user.router)
